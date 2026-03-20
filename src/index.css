@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", serif;
+  --color-wine: #4A0E1C;
+  --color-rosegold: #B76E79;
+  --color-rosegold-light: #E0BFB8;
+  --color-rosegold-dark: #8E535D;
+}
+
+@layer base {
+  body {
+    @apply bg-wine text-white antialiased;
+  }
+}
+
+.glitter-text {
+  background: linear-gradient(
+    to right,
+    #B76E79 20%,
+    #E0BFB8 40%,
+    #FFFFFF 50%,
+    #E0BFB8 60%,
+    #B76E79 80%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  background-clip: text;
+  animation: shine 3s linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.glitter-bg {
+  background-image: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 1%);
+  background-size: 3px 3px;
+}
