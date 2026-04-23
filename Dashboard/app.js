@@ -102,11 +102,11 @@ function processAndRender(data, filterCommerce = 'all') {
     const comerciosSet = new Set();
 
     filtered.forEach(row => {
-        const evt = getVal(row, 'event').toLowerCase();
+        const evt = getVal(row, 'event').toLowerCase() + getVal(row, 'evento').toLowerCase();
         const comercio = getVal(row, 'comercio');
 
-        if (evt.includes('view')) views++;
-        if (evt.includes('click')) clicks++;
+        if (evt.includes('view') || evt.includes('vista')) views++;
+        if (evt.includes('click') || evt.includes('clic')) clicks++;
         if (comercio && comercio !== 'N/A') comerciosSet.add(comercio);
     });
 
@@ -156,13 +156,18 @@ function renderCharts(data, getVal) {
     // Preparar Data Line Chart (Por fecha)
     const datesMap = {};
     data.forEach(row => {
-        let ts = getVal(row, 'timestamp').split(',')[0]; // Tomar solo fecha
-        if (ts === 'N/A') ts = 'Desconocida';
+        let tsRaw = getVal(row, 'timestamp');
+        if (tsRaw === 'N/A') tsRaw = getVal(row, 'fecha');
+        if (tsRaw === 'N/A') tsRaw = getVal(row, 'marca');
+        
+        // Extraer formato general de fecha
+        let ts = tsRaw !== 'N/A' ? tsRaw.split(',')[0].split(' ')[0] : 'Desconocida';
+        
         if (!datesMap[ts]) datesMap[ts] = { views: 0, clicks: 0 };
 
-        let evt = getVal(row, 'event').toLowerCase();
-        if (evt.includes('view')) datesMap[ts].views++;
-        if (evt.includes('click')) datesMap[ts].clicks++;
+        let evt = getVal(row, 'event').toLowerCase() + getVal(row, 'evento').toLowerCase();
+        if (evt.includes('view') || evt.includes('vista')) datesMap[ts].views++;
+        if (evt.includes('click') || evt.includes('clic')) datesMap[ts].clicks++;
     });
 
     const labelsLine = Object.keys(datesMap).slice(-15); // Últimos 15 días
@@ -173,8 +178,8 @@ function renderCharts(data, getVal) {
     const commerceMap = {};
     data.forEach(row => {
         let com = getVal(row, 'comercio');
-        let evt = getVal(row, 'event').toLowerCase();
-        if (evt.includes('view')) {
+        let evt = getVal(row, 'event').toLowerCase() + getVal(row, 'evento').toLowerCase();
+        if (evt.includes('view') || evt.includes('vista')) {
             if (!commerceMap[com]) commerceMap[com] = 0;
             commerceMap[com]++;
         }
