@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing Dashboard | Centro de Analíticas</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Iconos Phosphor -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    
+    <!-- Animación de Carga -->
+    <div id="loader" class="loader-overlay">
+        <div class="spinner"></div>
+        <p>Descargando métricas desde Google Sheets...</p>
+    </div>
+
+    <!-- Contenedor Principal Grilla -->
+    <div class="dashboard-wrapper">
+        
+        <!-- Sidebar Izquierdo -->
+        <aside class="sidebar">
+            <div class="brand">
+                <i class="ph-fill ph-chart-polar"></i>
+                <span>MKT Analytics</span>
+            </div>
+            
+            <nav class="nav-menu">
+                <p class="nav-title">VISTAS POR COMERCIO</p>
+                <ul id="commerce-list">
+                    <!-- Los botones de comercio se generarán dinámicamente aquí -->
+                    <li class="nav-item active" data-commerce="all">
+                        <i class="ph ph-globe-hemisphere-west"></i> Visión Global
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <p>Status: <span class="status-indicator">Online</span></p>
+                <button id="refresh-btn" class="btn-refresh">
+                    <i class="ph ph-arrows-clockwise"></i> Actualizar
+                </button>
+            </div>
+        </aside>
+
+        <!-- Contenido Central -->
+        <main class="main-content">
+            
+            <!-- Cabecera Top -->
+            <header class="top-header">
+                <div>
+                    <h1 id="dashboard-title">Visión Global Anual</h1>
+                    <p class="subtitle">Monitoreo de tráfico y conversiones en tiempo real.</p>
+                </div>
+                <div class="user-profile">
+                    <i class="ph ph-user-circle"></i>
+                    <span>Admin</span>
+                </div>
+            </header>
+
+            <!-- Tarjetas de KPIs Gglassmorphism -->
+            <section class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon blue"><i class="ph ph-users"></i></div>
+                    <div class="kpi-data">
+                        <h3>Vistas Totales</h3>
+                        <h2 id="kpi-views">0</h2>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon green"><i class="ph ph-mouse-left"></i></div>
+                    <div class="kpi-data">
+                        <h3>Clicks en Botón (CTA)</h3>
+                        <h2 id="kpi-clicks">0</h2>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon purple"><i class="ph ph-storefront"></i></div>
+                    <div class="kpi-data">
+                        <h3>Comercios Activos</h3>
+                        <h2 id="kpi-commerces">0</h2>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon orange"><i class="ph ph-trend-up"></i></div>
+                    <div class="kpi-data">
+                        <h3>Conversión Media</h3>
+                        <h2 id="kpi-cr">0%</h2>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gráficos -->
+            <section class="widgets-grid">
+                <div class="widget widget-chart xl">
+                    <div class="widget-header">
+                        <h2>Eventos en el Tiempo</h2>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="timelineChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="widget widget-chart">
+                    <div class="widget-header">
+                        <h2>Accesorios por Comercio</h2>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="doughnutChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tabla de Datos Recientes -->
+            <section class="table-section widget">
+                <div class="widget-header">
+                    <h2>Últimos Accesos Registrados</h2>
+                    <span class="badge" id="table-count">Mostrando recientes</span>
+                </div>
+                <div class="table-responsive">
+                    <table id="data-table">
+                        <thead>
+                            <tr id="table-head-row">
+                                <!-- Cabeceras Dinámicas -->
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            <!-- Filas Dinámicas -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Modal para insertar la URL la primera vez -->
+    <div id="setup-modal" class="modal-overlay">
+        <div class="modal-content glass-panel">
+            <h2><i class="ph ph-database"></i> Conectar Google Sheets</h2>
+            <p>Pega aquí la URL (Web App) generada por Google Apps Script para sincronizar tus analíticas.</p>
+            <input type="text" id="api-url-input" placeholder="https://script.google.com/macros/s/AKfycb.../exec">
+            <div class="modal-actions">
+                <button id="btn-demo" class="btn-secondary">Usar Datos de Prueba</button>
+                <button id="btn-save-url" class="btn-primary">Guardar y Conectar</button>
+            </div>
+            <p class="helper-text">Esta URL se guardará temporalmente en tu navegador.</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
